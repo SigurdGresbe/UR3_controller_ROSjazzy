@@ -1,0 +1,13 @@
+<launch>
+  <let name="pkg_share" value="$(find-pkg-share my_ur3)"/>
+
+  <let name="urdf_path" value="$(var pkg_share)/urdf/ur3_mesh_based.urdf.xacro"/>
+
+  <node pkg="robot_state_publisher" exec="robot_state_publisher" name="robot_state_publisher">
+    <param name="robot_description" value="$(command 'xacro $(var urdf_path)')"/>
+  </node>
+
+  <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui" name="joint_state_publisher_gui"/>
+
+  <node pkg="rviz2" exec="rviz2" name="rviz2" args="-d $(find-pkg-share my_ur3)/rviz/display.rviz"/>
+</launch>

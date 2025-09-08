@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="ur3">
+  
+  <!--Link macro setup -->
+  <xacro:macro name="link" params="prefix">
+    <link name="${prefix}_link">
+      <visual> 
+        <geometry>
+          <mesh filename="package://my_ur3/meshes/collision/${prefix}.stl" scale="1 1 1"/>
+        </geometry>
+        <material name="Gray_upperarm"><color rgba="0.5 0.5 0.5 1.0"/></material>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://my_ur3/meshes/collision/${prefix}.stl" scale="1 1 1"/>
+        </geometry>
+      </collision>
+    </link>
+  </xacro:macro>
+
+  <!--Joint macros setup -->
+  <xacro:macro name="joint" params="prefix parent child xyz axis">
+    <joint name="${prefix}_joint" type="revolute">
+      <parent link="${parent}_link"/>
+      <child link="${child}_link"/>
+      <origin xyz="${xyz}"/>
+      <axis xyz="${axis}"/>
+      <limit effort="50.0" velocity="3.0" lower="-3.00" upper="3.00"/>
+    </joint>
+  </xacro:macro>
+
+  <!--Link macros -->
+  <xacro:link prefix="base"/>
+  <xacro:link prefix="shoulder"/>
+  <xacro:link prefix="upperarm"/>
+  <xacro:link prefix="forearm"/>
+  <xacro:link prefix="wrist1"/>
+  <xacro:link prefix="wrist2"/>
+  <xacro:link prefix="wrist3"/>
+
+  <!--Joint macros -->
+  <xacro:joint prefix="shoulder_pan" parent="base" child="shoulder" xyz="0 0 0.1519" axis="0 0 1"/>
+  <xacro:joint prefix="shoulder_lift" parent="shoulder" child="upperarm" xyz="0 0.1198 0" axis="0 1 0"/>
+  <xacro:joint prefix="elbow" parent="upperarm" child="forearm" xyz="0 -0.0925 0.24365" axis="0 1 0"/>
+  <xacro:joint prefix="wrist1" parent="forearm" child="wrist1" xyz="0 0 0.21325" axis="0 1 0"/>
+  <xacro:joint prefix="wrist2" parent="wrist1" child="wrist2" xyz="0 0.08505 0" axis="0 0 1"/>
+  <xacro:joint prefix="wrist3" parent="wrist2" child="wrist3" xyz="0 0 0.08535" axis="0 1 0"/>
+
+</robot>  
+  <!--
+  <link name="base_link">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <visual>
+      <geometry>
+        <mesh filename="package://my_ur3/meshes/collision/base.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="Grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://my_ur3/meshes/collision/base.stl" scale="1 1 1"/>
+      </geometry>
+
+    </collision>
+  </link>
+
+  <link name="shoulder_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://my_ur3/meshes/collision/shoulder.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="Grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://my_ur3/meshes/collision/shoulder.stl" scale="1 1 1"/>
+      </geometry>
+
+    </collision>
+  </link>
+
+  <link name="upperarm_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://my_ur3/meshes/collision/upperarm.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="Grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://my_ur3/meshes/collision/upperarm.stl" scale="1 1 1"/>
+      </geometry>
+
+    </collision>
+  </link>
+
+  <link name="forearm_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://my_ur3/meshes/collision/forearm.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="Grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://my_ur3/meshes/collision/forearm.stl" scale="1 1 1"/>
+      </geometry>
+
+    </collision>
+  </link>
+
+  <link name="wrist_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://my_ur3/meshes/collision/wrist1.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="Grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://my_ur3/meshes/collision/wrist1.stl" scale="1 1 1"/>
+      </geometry>
+      
+    </collision>
+  </link>
+
+  <link name="wrist2_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://my_ur3/meshes/collision/wrist2.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="Grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://my_ur3/meshes/collision/wrist2.stl" scale="1 1 1"/>
+      </geometry>
+
+    </collision>
+  </link>
+
+  <link name="wrist3_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://my_ur3/meshes/collision/wrist3.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="Grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://my_ur3/meshes/collision/wrist3.stl" scale="1 1 1"/>
+      </geometry>
+
+    </collision>
+  </link>
+
+  <joint name="shoulder_pan_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <origin xyz="0 0 0.1519" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="50.0" velocity="3.0" lower="-3.00" upper="3.00"/>
+  </joint>
+
+  <joint name="shoulder_lift_joint" type="revolute">
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <origin xyz="0 0.1198 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="50.0" velocity="3.0" lower="-3.00" upper="3.00"/>
+  </joint>
+
+  <joint name="elbow_joint" type="revolute">
+    <parent link="link_2"/>
+    <child link="link_3"/>
+    <origin xyz="0 -0.0925 0.24365" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="50.0" velocity="3.0" lower="-3.00" upper="3.00"/>
+  </joint>
+
+  <joint name="wrist_1_joint" type="revolute">
+    <parent link="link_3"/>
+    <child link="link_4"/>
+    <origin xyz="0 0 0.21325" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="50.0" velocity="3.0" lower="-3.00" upper="3.00"/>
+  </joint>
+
+  <joint name="wrist_2_joint" type="revolute">
+    <parent link="link_4"/>
+    <child link="link_5"/>
+    <origin xyz="0 0.08505 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="50.0" velocity="3.0" lower="-3.00" upper="3.00"/>
+  </joint>
+
+  <joint name="wrist_3_joint" type="revolute">
+    <parent link="link_5"/>
+    <child link="link_6"/>
+    <origin xyz="0 0 0.08535" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="50.0" velocity="3.0" lower="-3.00" upper="3.00"/>
+  </joint>
+-->
